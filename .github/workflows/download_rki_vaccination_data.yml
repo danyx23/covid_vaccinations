@@ -1,0 +1,51 @@
+name: download_rki_vaccination_data
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+
+jobs:
+  download_rki_vaccination_data:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
+
+    - name: download_data
+      uses: suisei-cn/actions-download-file@v1
+      id: download_file  # Remember to give an ID if you need the output
+      with:
+        url: "https://www.rki.de/DE/Content/InfAZ/N/Neuartiges_Coronavirus/Daten/Impfquotenmonitoring.xlsx?__blob=publicationFile"
+        target: 'data/raw/rki_vaccinations/'
+
+    - name: rename_file
+      run: 'mv data/raw/rki_vaccinations/Impfquotenmonitoring.xlsx data/raw/rki_vaccinations/Impfquotenmonitoring_$(date -d "today" +"%Y%m%d%H%M").log'
+
+    - uses: EndBug/add-and-commit@v6 # You can change this to use a specific version
+      with:
+        # The arguments for the `git add` command (see the paragraph below for more info)
+        # Default: '.'
+        add: 'data/raw/rki_vaccinations'
+
+        # The name of the user that will be displayed as the author of the commit
+        # Default: author of the commit that triggered the run
+        author_name: Tobias Schmidt
+
+        # The email of the user that will be displayed as the author of the commit
+        # Default: author of the commit that triggered the run
+        author_email: royalts@gmail.com
+
+        # Name of the branch to use, if different from the one that triggered the workflow
+        # Default: the branch that triggered the run
+        branch: master
+
+
+        # The message for the commit
+        # Default: 'Commit from GitHub Actions (name of the workflow)'
+        message: 'Download latest RKI data'
+
+        # Whether to push the commit and, if any, its tags to the repo. It can also be used to set the git push arguments (see the paragraph below for more info)
+        # Default: true
+        push: true
