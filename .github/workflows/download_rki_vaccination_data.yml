@@ -22,7 +22,7 @@ jobs:
         target: 'data/raw/rki_vaccinations/'
 
     - name: rename_file
-      run: 'mv data/raw/rki_vaccinations/Impfquotenmonitoring.xlsx data/raw/rki_vaccinations/Impfquotenmonitoring_$(date -d "today" +"%Y%m%d%H%M").log'
+      run: 'mv data/raw/rki_vaccinations/Impfquotenmonitoring.xlsx data/raw/rki_vaccinations/Impfquotenmonitoring_$(date -d "today" +"%Y%m%d%H%M").xlsx'
 
     - uses: EndBug/add-and-commit@v6 # You can change this to use a specific version
       with:
