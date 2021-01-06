@@ -1,6 +1,7 @@
 name: download_rki_vaccination_data
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 12 * * *'
 
